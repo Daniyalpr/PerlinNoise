@@ -35,14 +35,14 @@ class PerlinNoise():
     raise ValueError("The interpolation function is not valid!")
   
 
-  def __call__(self, input, interpolation_function, frequency, amp_times, fre_times, octaves = 1, amplitude = 1):
+  def __call__(self, input, interpolation_function, frequency, amp_mul, fre_mul, octaves = 1, amplitude = 1):
     if input < 0:
       raise ValueError("Input can't be negative")
-    input *= frequency
 
    
     result = 0
     for i in range(octaves):
+      input *= frequency
       round_input = int(input)
     
       np.random.seed(round_input * self.seed)
@@ -53,9 +53,8 @@ class PerlinNoise():
 
       result += self.interpolation(previous_line, next_line, input, interpolation_function) * amplitude
 
-      amplitude *= amp_times
-      frequency *= fre_times
-      input *= frequency
+      amplitude *= amp_mul
+      frequency *= fre_mul
 
 
     return result
